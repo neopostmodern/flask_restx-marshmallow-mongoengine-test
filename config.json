@@ -1,0 +1,5 @@
+{
+    "MONGODB_SETTINGS": {
+        "host": "mongodb://mongoadmin:secret@localhost:27017/flask-test?authSource=admin&readPreference=primary&ssl=false"
+    }
+}
