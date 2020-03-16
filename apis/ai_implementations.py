@@ -64,12 +64,27 @@ class AiImplementationHealthCheck(Resource):
             id=ai_implementation_id
         ).get_or_404()
 
-        health_check = requests.post(
-            urljoin(ai_implementation.endpoint, "health-check"),
-            json={"aiImplementation": ai_implementation.name},
-        )
+        try:
+            health_check = requests.post(
+                urljoin(ai_implementation.endpoint, "health-check"),
+                json={"aiImplementation": ai_implementation.name},
+            )
+        except requests.exceptions.ConnectionError:
+            return (
+                {
+                    "status": "Error",
+                    "error": "Couldn't connect to AI health check endpoint",
+                },
+                200,
+            )
 
         if health_check.status_code != 200:
-            return {"status": health_check.status_code}
+            return (
+                {
+                    "status": "Error",
+                    "error": f"Bad response code from AI health check: {health_check.status_code}",
+                },
+                200,
+            )
 
         return health_check.json(), 200
