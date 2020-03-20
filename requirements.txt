@@ -8,3 +8,5 @@ flask_accepts
 git+https://github.com/qcho/marshmallow-mongoengine.git@8ecace4c70a786e4eaebab8688e321a7b9de0e56 # marshmallow-mongoengine with fix
 black
 requests
+requests_futures
+celery

@@ -10,7 +10,7 @@ api = Namespace("ai-implementations", description="AI Implementation operations"
 
 
 @api.route("")
-class AiImplementationCRUD1(Resource):
+class CollectionCRUD(Resource):
     @responds(
         schema=AiImplementationSchema(many=True),
         api=api,
@@ -35,7 +35,7 @@ class AiImplementationCRUD1(Resource):
     "ai_implementation_id", "ID of the AI implementation reference"
 )
 @api.response(404, "AI implementation reference not found.")
-class AiImplementationCRUD2(Resource):
+class EntityCRUD(Resource):
     @responds(schema=AiImplementationSchema, api=api)
     def get(self, ai_implementation_id):
         return AiImplementation.objects(id=ai_implementation_id).get_or_404()

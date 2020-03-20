@@ -1,8 +1,8 @@
-from flask import Flask
+import json
 
-from core import db
-from apis import blueprint
+from core import create_app
 from models.ai_implementation import AiImplementation
+from models.case_set import CaseSet
 
 
 def create_toy_ais():
@@ -21,14 +21,22 @@ def create_toy_ais():
         AiImplementation(name=toy_ai_name, endpoint=toy_ai_endpoint).save()
 
 
-if __name__ == "__main__":
-    app = Flask(__name__)
-    # couldn't get mongo config to work in separate entries, only a single connection string entry seems to connect
-    app.config.from_json("config.json")
-    db.init_app(app)
+def store_london_case_set():
+    if CaseSet.objects(name="London Model Cases").first():
+        return
 
-    app.register_blueprint(blueprint)
+    with open("./data/london-cases.json", "r") as london_cases_json_file:
+        london_cases = json.load(london_cases_json_file)
+
+    london_case_set = CaseSet(name="London Model Cases")
+    london_case_set["cases"] = london_cases
+    london_case_set.save()
+
+
+if __name__ == "__main__":
+    app = create_app()
 
     create_toy_ais()
+    store_london_case_set()
 
     app.run(debug=True)
