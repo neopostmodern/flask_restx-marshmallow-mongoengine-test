@@ -1,6 +1,6 @@
 flask
 flask_restx
-Werkzeug==0.16.1 # some incompatibility with flask_restx
+Werkzeug==2.2.3 # some incompatibility with flask_restx
 flask_mongoengine
 marshmallow
 flask-marshmallow
